@@ -1,0 +1,7 @@
+DATA
+__pycache__
+nn/__pycache__
+nn/sql
+nn/n_experiments
+nn/*.csv
+
