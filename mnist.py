@@ -1,3 +1,5 @@
+import os
+import sys
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
@@ -74,20 +76,73 @@ class NeuralNetwork(nn.Module):
     logits = self.linear_relu_stack(x)
     return logits
 
+class Reshape(nn.Module):
+  def __init__(self):
+    super(Reshape, self).__init__()
+  def forward(self, x):
+    shape_batch=x.shape[0]
+    shape_feature=x[0].flatten().shape[-1]
+    return x.view((shape_batch,shape_feature))
+
+class CNN_model(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.cnn_layers = nn.Sequential(
+            nn.Conv2d(1, 10, 5),
+            nn.MaxPool2d(4),
+            nn.ReLU(),
+            Reshape(),
+            nn.Linear(360, 10),
+            nn.ReLU(),
+            nn.Softmax(-1),
+    )
+  def forward(self, x):
+    logits = self.cnn_layers(x)
+    return logits
+
+
 device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
 print(f"Using {device} device")
 
-model=NeuralNetwork().to(device)
+
+#def reshape_test(x):
+#    shape_batch=x.shape[0]
+#    shape_feature=x[0].flatten().shape[-1]
+#    return x.view((shape_batch,shape_feature))
+
+
+model=CNN_model().to(device)
 #model=NeuralNetwork()
-model.load_state_dict(torch.load("model_weights.pth", weights_only=True))
-#print(model)
+#if os.path.exists("model_weights.pth"): 
+#  model.load_state_dict(torch.load("model_weights.pth", weights_only=True))
+print(model)
 #img, label= test_data[0]
+#img=img.unsqueeze(0)
+#label=label.unsqueeze(0)
+#batch_img, batch_label= next(iter(test_dataloader))
+
+#test_cnn_layers = nn.Sequential(
+#            nn.Conv2d(1, 10, 5),
+#            nn.MaxPool2d(4),
+#            nn.ReLU(),
+#            Reshape(),
+#            nn.Linear(360, 10),
+#            nn.ReLU(),
+#            nn.Softmax(-1))
+#print(img.shape)
+#print(test_cnn_layers(img).shape)
+#quit()
+#batch_img, batch_label= next(iter(test_dataloader))
+#print(batch_img.shape)
+#print(reshape_test(batch_img).shape)
+#quit()
+
 #print(model(img).squeeze(),label)
 #print(model(img).squeeze().argmax(0).item())
 #quit()
 
 ### Hyper_params 
-learning_rate = 1e-3 
+learning_rate = 1e-2 
 batch_size = 64
 epochs = 5 
 
@@ -153,7 +208,7 @@ if quicklook_test == True:
       img, label = test_data[sample_idx]
       figure.add_subplot(rows, cols, i)
       with torch.no_grad():
-        label_pred=model(img).squeeze().argmax(0).item()
+        label_pred=model(img.unsqueeze(0)).squeeze().argmax(0).item()
         label_item=label.squeeze().argmax(0).item()
         print(label_item,label_pred)
       plt.title(str(label_item)+","+str(label_pred))
@@ -162,7 +217,7 @@ if quicklook_test == True:
   plt.savefig("test_final.png")
 
 
-torch.save(model.state_dict(), 'model_weights.pth')
+torch.save(model.state_dict(), 'cnn_odel_weights.pth')
 
 #model_new=NeuralNetwork()
 
