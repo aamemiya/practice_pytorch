@@ -8,6 +8,7 @@ from torchvision.transforms import ToTensor, Lambda
 import matplotlib.pyplot as plt
 import numpy as np 
 from torch import nn
+from collections import OrderedDict
 
 quicklook=False
 quicklook_test=True
@@ -113,8 +114,16 @@ print(f"Using {device} device")
 
 model=CNN_model().to(device)
 #model=NeuralNetwork()
-#if os.path.exists("model_weights.pth"): 
-#  model.load_state_dict(torch.load("model_weights.pth", weights_only=True))
+epoch_done=0
+if os.path.exists("cnn_model_weights.pth"): 
+  model.load_state_dict(torch.load("cnn_model_weights.pth", weights_only=True))
+
+
+ # print(checkpoint.keys())
+
+
+ # model.load_state_dict(checkpoint, weights_only=True)
+  epoch_done=torch.load("cnn_model_others.pth")["epoch"]
 print(model)
 #img, label= test_data[0]
 #img=img.unsqueeze(0)
@@ -144,7 +153,7 @@ print(model)
 ### Hyper_params 
 learning_rate = 1e-2 
 batch_size = 64
-epochs = 5 
+epochs = 3
 
 
 loss_fn = nn.CrossEntropyLoss()
@@ -194,7 +203,8 @@ def test_loop(dataloader, model, loss_fn):
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 for t in range(epochs): 
-    print(f"Epoch {t+1}\n-------------------------------")
+    epoch_total=epoch_done+t+1
+    print(f"Epoch {epoch_total}\n-------------------------------")
     train_loop(train_dataloader, model, loss_fn, optimizer)
     test_loop(test_dataloader, model, loss_fn)
 
@@ -216,8 +226,14 @@ if quicklook_test == True:
       plt.imshow(img.squeeze(), cmap="gray")
   plt.savefig("test_final.png")
 
+torch.save(model.state_dict(), 'cnn_model_weights.pth')
 
-torch.save(model.state_dict(), 'cnn_odel_weights.pth')
+# Create an OrderedDict
+others_dict = OrderedDict()
+others_dict['epoch'] = epoch_total
+torch.save(others_dict, 'cnn_model_others.pth')
+#torch.save(model.state_dict(), 'cnn_model_weights.pth')
+
 
 #model_new=NeuralNetwork()
 

@@ -119,13 +119,13 @@ def my_config(trial):
 
     plist['pickle_name'] = plist['checkpoint_dir'] + '/params.pickle'
 
-#    if os.path.isfile(plist['pickle_name']):
-#        print('\nPickle file exists. Reading parameter list from it.\n')
-#        plist = helpfunc.read_pickle(plist['pickle_name'])
-#    else:
-    print('\nCreating experiment_dir and the corresponding sub-directories.\n')
-    os.makedirs(plist['log_dir'],exist_ok=True)
-    os.makedirs(plist['checkpoint_dir'],exist_ok=True)
+    if os.path.isfile(plist['pickle_name']):
+        print('\nPickle file exists. Reading parameter list from it.\n')
+        plist = helpfunc.read_pickle(plist['pickle_name'])
+    else:
+        print('\nCreating experiment_dir and the corresponding sub-directories.\n')
+        os.makedirs(plist['log_dir'],exist_ok=True)
+        os.makedirs(plist['checkpoint_dir'],exist_ok=True)
 
     plist['epochs'] = args.epochs
     plist['test_num_timesteps'] = 300
@@ -135,6 +135,5 @@ def my_config(trial):
 
 if __name__ == "__main__":
     plist = my_config([])
-    #tntt.traintest(copy.deepcopy(plist))
-    print("tntt.traintest(copy.deepcopy(plist))")
+    tntt.traintest(copy.deepcopy(plist))
 

@@ -4,6 +4,21 @@ from torch import nn
 
 torch.random.seed()
 
+
+
+#test_cell=nn.LSTMCell(5,10)
+#x_in=torch.rand((3,5))
+#state_h_1=torch.rand((3,10))
+#state_c_1=torch.rand((3,10))
+
+#state_h_1, state_c_1 = test_cell(x_in, (state_h_1, state_c_1))
+#print(y_out)
+#print("h_1",state_h_1)
+#print("c_1",state_c_1)
+
+#quit()
+
+
 #Model network defination
 class rnn_model(nn.Module):
 
@@ -21,13 +36,14 @@ class rnn_model(nn.Module):
         self.dense_list.append(nn.Tanh())
 
     def forward(self,x):
-        state_h_1=torch.rand(10)
-        state_c_1=torch.rand(10)
-        state_h_2=torch.rand(20)
-        state_c_2=torch.rand(20)
-        y, (state_h_1, state_c_1) = self.rnn_list[0](x, (state_h_1, state_c_1) )
-        y, (state_h_2, state_c_2) = self.rnn_list[1](y, (state_h_2, state_c_2) )
-        y = self.dense_list[1](self.dense_list[0](y))
+        batch_size=x.shape[0]
+        state_h_1=torch.rand(batch_size,10)
+        state_c_1=torch.rand(batch_size,10)
+        state_h_2=torch.rand(batch_size,20)
+        state_c_2=torch.rand(batch_size,20)
+        state_h_1, state_c_1 = self.rnn_list[0](x, (state_h_1, state_c_1) )
+        state_h_2, state_c_2 = self.rnn_list[1](state_h_1, (state_h_2, state_c_2) )
+        y = self.dense_list[1](self.dense_list[0](state_h_2))
         y = self.dense_list[3](self.dense_list[2](y))
         return y 
 
