@@ -1,14 +1,11 @@
 import numpy as np
-import tensorflow as tf
+import torch
+from torch import nn
 
-
-tf.random.set_seed(5)
-
-def cus_tanh(x):
-    return 2 * tf.keras.activations.tanh(x)
+torch.random.seed()
 
 #Model network defination
-class rnn_model(tf.keras.Model):
+class rnn_model(nn.Module):
 
     def __init__(self, parameter_list, name = 'RNN_Model'):
         super(rnn_model, self).__init__()
@@ -26,13 +23,20 @@ class rnn_model(tf.keras.Model):
         self.locality = parameter_list['locality']
         self.type = parameter_list['NN_type']
 
-    def build(self, input_shape):
+        if self.acti_d == "ReLU": 
+          self.dense_acti = nn.ReLU
+        elif self.acti_d == "tanh": 
+          self.dense_acti = nn.Tanh
+        else
+          print("self.acti_d = " + self.acti_d + " not supported ")
+          quit()
 
         self.rnn_list = []
         i = 0
         for i in range(self.num_layers):
             if (self.type == "LSTM") : 
-                self.rnn_list.append(tf.keras.layers.LSTM(units = self.unit[i], 
+                self.rnn_list.append(nn.LSTM(input_size=self.locality, 
+                                             output_size=self.unit[i],
                                                     activation = self.acti,
                                                     recurrent_activation = self.recurrent_activ,
                                                     kernel_regularizer = self.kernel_regular,
@@ -84,11 +88,18 @@ class rnn_model(tf.keras.Model):
                                     kernel_regularizer = self.kernel_regular,
                                     activation = self.acti_d,
                                     name = 'DENSE_{}'.format(i+1)))
-            #self.dense_list.append(tf.keras.layers.PReLU(alpha_initializer = tf.constant_initializer(0.25), shared_axes = [1], name='PReLU_{}'.format(i+1)))
         self.dense_list.append(tf.keras.layers.Dense(units=self.dense_out[-1],
                                             kernel_regularizer = self.kernel_regular,
                                             activation = None,
                                             name = 'DENSE_{}'.format(i+1)))
+    def forward:
+
+
+
+      for i in range(len(self.dense_list)):
+        y = self.dense_list[i](y)
+      return y
+
     def call(self, inputs, stat):
         
         initializer = tf.initializers.GlorotUniform(seed = 1)
@@ -114,8 +125,10 @@ class rnn_model(tf.keras.Model):
             x = x[:, -1, :]
         except:
             pass
-        for i in range(len(self.dense_list)):
-            x = self.dense_list[i](x)
 
-        return x, [state_h, state_c]
+        for i in range(len(self.dense_list)):
+            y = self.dense_acti(self.dense_list[i](y))
+
+        y = layer_output(y)
+        return y
         

@@ -14,7 +14,7 @@ import datetime
 
 from plotting_single import plot_history
 
-mirrored_strategy = tf.distribute.MirroredStrategy()
+from collections import OrderedDict
 
 def train(plist, model, checkpoint, manager, summary_writer, optimizer, train_dataset_dist, val_dataset_dist):
    
@@ -242,41 +242,35 @@ def traintest(plist):
     val_dataset_dist = mirrored_strategy.experimental_distribute_dataset(dataset_val)
     train_dataset_dist = mirrored_strategy.experimental_distribute_dataset(dataset_train)
 
-    #Get the Model
-    with mirrored_strategy.scope():
-        model = net.rnn_model(plist)
+    model = net.rnn_model(plist)
 
-        #Defining Model compiling parameters
-        if plist['lr_decay_rate']:
-            learningrate_schedule = tf.keras.optimizers.schedules.ExponentialDecay(plist['learning_rate'],
+    #Defining Model compiling parameters
+    if plist['lr_decay_rate']:
+        learningrate_schedule = tf.keras.optimizers.schedules.ExponentialDecay(plist['learning_rate'],
                                                                           decay_steps = plist['lr_decay_steps'],
                                                                           decay_rate = plist['lr_decay_rate'],
                                                                           staircase = False)
-            learning_rate = learningrate_schedule 
-        else:
-            learning_rate = plist['learning_rate']
-        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+        learning_rate = learningrate_schedule 
+    else:
+        learning_rate = plist['learning_rate']
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
-        #Defining the checkpoint instance
-        a_f = tf.Variable(a_f, dtype = tf.float32)
-        s_f = tf.Variable(s_f, dtype = tf.float32)
-        time_splits = tf.Variable(plist['time_splits'])
-        checkpoint = tf.train.Checkpoint(epoch = tf.Variable(0), model = model, a_f = a_f, s_f = s_f, time_splits = time_splits)
-
-    #Creating summary writer
-    summary_writer = tf.summary.create_file_writer(logdir= plist['log_dir'])
-
-    #Creating checkpoint instance
-    save_directory = plist['checkpoint_dir']
-    manager = tf.train.CheckpointManager(checkpoint, directory= save_directory, 
-                                        max_to_keep= plist['max_checkpoint_keep'])
-    checkpoint.restore(manager.latest_checkpoint).expect_partial()
-
-
-    model2 = net.rnn_model(plist)
-    checkpoint2 = tf.train.Checkpoint(epoch = tf.Variable(0), model = model2, a_f = a_f, s_f = s_f, time_splits = time_splits)
-    checkpoint2.restore(manager.latest_checkpoint).expect_partial()
+    #Defining the checkpoint instance
+    a_f = torch.Variable(a_f)
+    s_f = torch.Variable(s_f)
+    time_splits = torch(['time_splits'])
+      
+    others_dict = OrderedDict()
+    others_dict['epoch'] = 0
+    others_dict['time_splits'] = time_splits
+    others_dict['a_f'] = a_f
+    others_dict['s_f'] = s_f
  
+#    #Creating summary writer
+#    summary_writer = tf.summary.create_file_writer(logdir= plist['log_dir'])
+
+    save_directory = plist['checkpoint_dir']
+
     #Checking if previous checkpoint exists
     if manager.latest_checkpoint:
         print("Restored from {}".format(manager.latest_checkpoint))
