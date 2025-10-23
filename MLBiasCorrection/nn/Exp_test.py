@@ -46,37 +46,19 @@ def my_config(trial):
     plist = {}
     
     #Network related settings
-    plist['make_recurrent'] = args.recurrent 
-    plist['NN_type'] = args.network_type
-    plist['use_sprd'] = args.use_spread
+    plist['make_recurrent'] = 0 
+    plist['NN_type'] = "Dense"
+    plist['use_sprd'] = 0
+    plist['time_splits'] = 1 
+    plist['num_rnn_layers'] = 0
+    plist['RNN_output'] = []
+    plist['num_dense_layers'] = 3
+    plist['dense_output'] = []
+    plist['dense_output'].append(21)
+    plist['dense_output'].append(15)
+    plist['dense_output'].append(12)
 
-    if args.recurrent:
-        plist['time_splits'] = args.time_splits
-        print('\nNetwork is recurrent\n')
-        plist['num_rnn_layers'] = 3
-        plist['RNN_output'] = []
-        plist['RNN_output'].append(10)
-        plist['RNN_output'].append(8)
-        plist['RNN_output'].append(4)
-        plist['num_dense_layers'] = 1
-        plist['dense_output'] = []
-        plist['dense_output'].append(9)
-        for i in range(plist['num_dense_layers'] - 1):
-            plist['dense_output'].append(4)
-    else:
-        plist['time_splits'] = 1 
-        print('\nNetwork is only dense\n')
-        plist['num_rnn_layers'] = 0
-        plist['RNN_output'] = []
-        plist['num_dense_layers'] = 3
-        plist['dense_output'] = []
-        plist['dense_output'].append(21)
-        plist['dense_output'].append(15)
-        plist['dense_output'].append(12)
-
-    plist['dense_output'].append(1)
-
-
+    #plist['dense_output'].append(1)
     plist['activation'] = 'relu'
     plist['d_activation'] = 'relu'
     plist['rec_activation'] = 'sigmoid'
@@ -91,27 +73,26 @@ def my_config(trial):
     plist['early_stop_patience'] = 400
     plist['summery_freq'] = 1
     plist['global_epoch'] = 0
-    plist['global_batch_size'] = args.train_batch  
-    plist['global_batch_size_v'] = args.val_batch
+    plist['global_batch_size'] = 1024  
+    plist['global_batch_size_v'] = 1024
     plist['val_size'] = 1 * plist['global_batch_size_v']
     plist['val_min'] = 1000
 
     plist['lr_decay_steps'] = 1000
     plist['lr_decay_rate'] = 0
     plist['grad_mellow'] = 1
-    plist['learning_rate'] = 1.0e-3
+    plist['learning_rate'] = 1.0e-4
     plist['learning_rate'] = plist['learning_rate'] * plist['global_batch_size'] / (128)
     
     #Dataset and directories related settings
-    plist['netCDf_loc'] = args.netcdf_dataset
-    plist['optuna_db'] = args.optuna_sql
+    plist['netCDf_loc'] = "../DATA/coupled_A13/obs_p8_010/nocorr/assim.nc"
     plist['xlocal'] = 3
-    plist['locality'] = args.locality
-    plist['degree'] = args.degree
-    plist['normalized'] = args.normalized
-    plist['anal_for_mix'] = args.af_mix
+    plist['locality'] = 1
+    plist['degree'] = 1
+    plist['normalized'] = 1
+    plist['anal_for_mix'] = 0
 
-    plist['experiment_name'] = args.id_exp  
+    plist['experiment_name'] = "torch_test"  
 
     plist['experiment_dir'] = os.getcwd() + '/n_experiments/' + plist['experiment_name'] 
     plist['checkpoint_dir'] = plist['experiment_dir'] + '/checkpoint'
@@ -127,9 +108,10 @@ def my_config(trial):
         os.makedirs(plist['log_dir'],exist_ok=True)
         os.makedirs(plist['checkpoint_dir'],exist_ok=True)
 
-    plist['epochs'] = args.epochs
+    plist['epochs'] = 10
     plist['test_num_timesteps'] = 300
-    plist['num_timesteps'] = int(((plist['global_batch_size'] * args.num_batches + plist['val_size']) * plist['time_splits'])/ 8 + 100)
+    #plist['num_timesteps'] = int(((plist['global_batch_size']  + plist['val_size']) * plist['time_splits'])/ 8 + 100)
+    plist['num_timesteps'] = 29999
     
     return plist
 

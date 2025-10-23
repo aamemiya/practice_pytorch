@@ -31,6 +31,7 @@ def scatter_plot(plot_variable, variable_num, x1_label, x2_label, y_label, direc
         })
 
     ax.set_xlabel(x2_label)
+    ax.set_ylabel("Analysis - Forecast")
     ax.plot(x2, np.zeros(len(x2)), c = 'g', linewidth = 1)
     ax.scatter(x2, x2-y, s=10, marker='o', c = 'b', label= x2_label + ' - ' + y_label)
     ax.scatter(x2, x1-y, s=8, marker='*', c = 'r', label=x1_label + ' - ' + y_label)
@@ -41,6 +42,19 @@ def scatter_plot(plot_variable, variable_num, x1_label, x2_label, y_label, direc
     img_name = directory + '/scatter_plot_variable_{}.png'.format(variable_num)
     print('Saving image file: {}'.format(img_name))
     fig.savefig(img_name, format= 'png', dpi = 600)
+
+def sample_scatter(varx, vary):
+
+    nsmp=len(varx)
+
+    fig, ax = plt.subplots()
+
+    ax.scatter(varx, vary, s=10, marker='o', c = 'b')
+
+    img_name = 'sample_scat.png'
+    print('Saving image file: {}'.format(img_name))
+    fig.savefig(img_name, format= 'png', dpi = 600)
+
 
 def line_plot(plot_variable, variable_num, directory):
 

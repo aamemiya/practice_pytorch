@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 #------------------------------------------------
 ### config
 
-ncdir_in  = '/data9/amemiya/python_LETKF/MLBiasCorrection/DATA/add/test_obs/advection'
+ncdir_in  = '/home/jwa-user/practice_pytorch/MLBiasCorrection/DATA/coupled_A13/obs_p8_010/nocorr'
 ncdir_out  = './TEST_out'
 num_order = 1
 

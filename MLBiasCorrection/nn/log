@@ -1,0 +1,376 @@
+
+Pickle file exists. Reading parameter list from it.
+
+
+Processing Dataset
+
+-16.531877517700195 23.14246940612793
+0.2875
+RMSE of Analysis - Forecast:  0.14134203282383537
+0.36
+
+Using Normalized Dataset.
+
+Forecast normalized min:  -3.113323618719358  max:  3.095341558638048
+(900, 8)
+ana (7200, 1)
+tra 7136
+data in dataset
+7136
+data in dataloader
+Model structure: rnn_model(
+  (rnn_list): Sequential()
+  (dense_list): Sequential(
+    (0): Dense(
+      (nn_dense): Linear(in_features=1, out_features=21, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (1): Dense(
+      (nn_dense): Linear(in_features=21, out_features=15, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (2): Dense(
+      (nn_dense): Linear(in_features=15, out_features=12, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (3): Dense(
+      (nn_dense): Linear(in_features=12, out_features=1, bias=True)
+      (nn_ReLU): ReLU()
+    )
+  )
+)
+
+
+rnn_model(
+  (rnn_list): Sequential()
+  (dense_list): Sequential(
+    (0): Dense(
+      (nn_dense): Linear(in_features=1, out_features=21, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (1): Dense(
+      (nn_dense): Linear(in_features=21, out_features=15, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (2): Dense(
+      (nn_dense): Linear(in_features=15, out_features=12, bias=True)
+      (nn_ReLU): ReLU()
+    )
+    (3): Dense(
+      (nn_dense): Linear(in_features=12, out_features=1, bias=True)
+      (nn_ReLU): ReLU()
+    )
+  )
+)
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 71 : Train loss, acc, Validation acc 0.00033763099725739494 0.010804191912236638 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 72 : Train loss, acc, Validation acc 0.0003258269075040723 0.010426461040130314 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 73 : Train loss, acc, Validation acc 0.00025230632536319656 0.00807380241162229 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 74 : Train loss, acc, Validation acc 0.0003004890941812881 0.00961565101380122 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 75 : Train loss, acc, Validation acc 0.0003050822402702304 0.009762631688647373 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 76 : Train loss, acc, Validation acc 0.0002561160557676308 0.008195713784564185 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 77 : Train loss, acc, Validation acc 0.000266789154286349 0.008537252937163169 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 78 : Train loss, acc, Validation acc 0.0004109135639554771 0.013149234046575267 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 79 : Train loss, acc, Validation acc 0.0001713117863025443 0.005481977161681417 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+pred max tensor(0., grad_fn=<MaxBackward1>)
+pred min tensor(0., grad_fn=<MinBackward1>)
+epoch 80 : Train loss, acc, Validation acc 0.0003315951431406509 0.010611044580500828 0.014569904495433592
+Layer: dense_list.0.nn_dense.weight | Size: torch.Size([21, 1]) | Values : tensor([[-0.7799],
+        [-0.8996]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.0.nn_dense.bias | Size: torch.Size([21]) | Values : tensor([-0.7529,  0.3265], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.weight | Size: torch.Size([15, 21]) | Values : tensor([[-0.1318, -0.1319, -0.0269,  0.2047, -0.0994,  0.0611,  0.1273,  0.1751,
+          0.0038,  0.0349,  0.0237,  0.1804, -0.1458,  0.1000,  0.1400,  0.0945,
+          0.1363,  0.0927, -0.0006, -0.0546, -0.1890],
+        [ 0.1963,  0.0278, -0.1487,  0.1894,  0.1670,  0.1058,  0.0631,  0.1255,
+         -0.1737, -0.0969, -0.2058, -0.0587, -0.0384, -0.0044, -0.1755,  0.1008,
+         -0.0912,  0.0433,  0.0239, -0.0466,  0.0905]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.1.nn_dense.bias | Size: torch.Size([15]) | Values : tensor([-0.1811, -0.2107], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.weight | Size: torch.Size([12, 15]) | Values : tensor([[-0.1779, -0.2223, -0.1534, -0.2027, -0.1221,  0.1171, -0.0778,  0.1111,
+          0.0857, -0.1784,  0.1356,  0.2301,  0.1874,  0.1076,  0.0319],
+        [ 0.1082, -0.2004,  0.2206,  0.0976,  0.1117,  0.1956,  0.1741,  0.0766,
+          0.1786, -0.2231, -0.0110, -0.1745,  0.1850,  0.1588,  0.1260]],
+       grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.2.nn_dense.bias | Size: torch.Size([12]) | Values : tensor([-0.2388, -0.1957], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.weight | Size: torch.Size([1, 12]) | Values : tensor([[ 0.2659, -0.0365,  0.0746,  0.0389,  0.0929, -0.1893,  0.1800,  0.0907,
+          0.0542, -0.2542,  0.1459, -0.2851]], grad_fn=<SliceBackward0>) 
+
+Layer: dense_list.3.nn_dense.bias | Size: torch.Size([1]) | Values : tensor([-0.1933], grad_fn=<SliceBackward0>) 
+
+
+ Total training time (in minutes): 0.040587222576141356

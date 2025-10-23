@@ -33,7 +33,7 @@ class rnn_model(nn.Module):
         self.type = parameter_list['NN_type']
 
 
-        self.rnn_list = []
+        self.rnn_list = nn.Sequential()
         i = 0
         for i in range(self.num_layers):
             if i == 0 : 
@@ -49,23 +49,39 @@ class rnn_model(nn.Module):
             elif (self.type == "Dense") : 
                 self.rnn_list.append(Dense(self.locality,self.unit[i]))
 
-        self.dense_list = []
+        self.dense_list = nn.Sequential()
         i = 0
         for i in range(self.num_dense_layers):
             if i == 0 : 
-                input_shape=self.unit[-1]
+                if self.num_layers == 0:
+                   input_shape=self.locality
+                else:
+                   input_shape=self.unit[-1]
             else :
                 input_shape=self.dense_out[i-1]
             self.dense_list.append(Dense(input_shape,self.dense_out[i]))
-        self.dense_list.append(Dense(self.dense_out[-1],1))
+        self.dense_list.append(nn.Linear(self.dense_out[-1],1))
 
     def forward(self,x):
         if len(x.shape) < 2: ### not batch
             x=x.unsqueeze(0) 
         batch_size=x.shape[0]
-        for i in range(len(self.rnn_list)):
-            state_h=torch.rand((batch_size,self.unit[i]))
-            state_c=torch.rand((batch_size,self.unit[i]))
+#        for i in range(len(self.rnn_list)):
+#            state_h=torch.rand((batch_size,self.unit[i]))
+#            state_c=torch.rand((batch_size,self.unit[i]))
+#            if (self.type == "LSTM") : 
+#              state_h, state_c = self.rnn_list[i](x, (state_h, state_c))
+#            elif (self.type == "GRU" or self.type == "SimpleRNN") : 
+#              state_h = self.rnn_list[i](x, state_h)
+#            elif (self.type == "Dense") :
+#              state_h = self.rnn_list[i](x)
+#            y = state_h  
+#        for i in range(len(self.dense_list)):
+#            y = self.dense_list[i](y)
+        if len(self.rnn_list) > 0 :
+         for i in range(len(self.rnn_list)):
+            state_h=torch.rand((batch_size,self.unit[i]),dtype=torch.double)
+            state_c=torch.rand((batch_size,self.unit[i]),dtype=torch.double)
             if (self.type == "LSTM") : 
               state_h, state_c = self.rnn_list[i](x, (state_h, state_c))
             elif (self.type == "GRU" or self.type == "SimpleRNN") : 
@@ -73,7 +89,9 @@ class rnn_model(nn.Module):
             elif (self.type == "Dense") :
               state_h = self.rnn_list[i](x)
             y = state_h  
+        else: 
+            y = x
         for i in range(len(self.dense_list)):
-            y = self.dense_list[i](y)
+            y = self.dense_list[i](y) 
         return y
         

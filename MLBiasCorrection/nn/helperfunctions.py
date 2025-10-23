@@ -1,6 +1,6 @@
 #import tensorflow as tf
 import numpy as np
-from netCDF4 import Dataset
+import netCDF4
 import time
 import math
 import pandas as pd
@@ -45,7 +45,8 @@ def make_poly(init_dataset, degree):
 def truth_label_creator(init_dataset):
     output_dataset = init_dataset[:]
     output_dataset = np.expand_dims(output_dataset, axis=0)
-    return np.transpose(output_dataset.astype('float32'))
+    #return np.transpose(output_dataset.astype('float32'))
+    return np.transpose(output_dataset)
 
 #Creating time data splits
 def split_sequences(sequences, n_steps):
@@ -91,7 +92,7 @@ def read_json(loc):
 def createdataset(plist):
 
     #Getting the NetCDF files
-    root_grp = Dataset(plist['netCDf_loc'], "r", format="NETCDF4")
+    root_grp = netCDF4.Dataset(plist['netCDf_loc'], "r", format="NETCDF4")
 
     #Extrating the datasets
     analysis_init = np.array(root_grp["vam"])[100:plist['num_timesteps']]
@@ -142,6 +143,19 @@ def createdataset(plist):
     return forecast_dataset, analysis_dataset, spread_dataset, ave_forecast, std_forecast
 
 #Code for creating Tensorflow Dataset:
-#def create_tfdataset(initial_dataset):
-#    tf_dataset = tf.data.Dataset.from_tensor_slices(initial_dataset)
-#    return tf_dataset
+def create_tfdataset(initial_dataset):
+    tf_dataset = initial_dataset
+    return tf_dataset
+
+class WeightedDataset(torch.utils.data.Dataset):
+    def __init__(self, data, labels, weights):
+        self.data = data
+        self.labels = labels
+        self.weights = weights
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx], self.labels[idx], self.weights[idx]
+
