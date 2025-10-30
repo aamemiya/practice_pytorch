@@ -6,6 +6,9 @@ import param
 
 import matplotlib.pyplot as plt
 
+import torch
+from torch import nn
+
 # model size
 nx  = param.param_model['dimension'] 
 # integration
@@ -43,14 +46,51 @@ data_input_local=np.concatenate((data_input_local,np.ones((data_input_local.shap
 
 data_output_local=np.array(data_output).reshape(1,data_output.size).transpose()
 
+class nnmodel(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.layers = nn.Sequential(
+            nn.Linear(2*local_dist+2,1, bias=False),
+    )
+  def forward(self, x):
+    y = self.layers(x)
+    return y
+
+model=nnmodel()
+loss_L2=nn.MSELoss()
+optimizer= torch.optim.SGD(model.parameters(),lr=1.0e-2)
+
+wmat_torch=next(model.parameters())
+print("wmat_torch init",wmat_torch.tolist())
+
+torch_data_input=torch.from_numpy(data_input_local.astype(np.float32))
+torch_data_output=torch.from_numpy(data_output_local.astype(np.float32))
+
+loss=loss_L2(model(torch_data_input),torch_data_output)
+print("Loss step=0",loss)
+
+model.train()
+for j in range(2000):
+  loss=loss_L2(model(torch_data_input),torch_data_output)
+
+  # Backpropagation
+  loss.backward()
+  optimizer.step()
+  optimizer.zero_grad()
+
+  if np.mod(j,100) == 0 : 
+     print("Loss step= ",j,loss.item())
+
+wmat_torch=next(model.parameters())
+print("wmat_torch trained",wmat_torch.tolist())
 
 
 bmatinv=LA.inv(data_input_local.transpose() @ data_input_local)
 
 wmat = data_output_local.transpose() @ ( data_input_local @ bmatinv )
 
-print(wmat)
-print(wmat.shape)
+print("wmat trained",wmat.tolist())
+
 quit()
 
 ### Varidation
