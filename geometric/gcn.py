@@ -31,11 +31,12 @@ def draw_graph(data_input):
 dataset = TUDataset(root='/tmp/ENZYMES', name='ENZYMES', use_node_attr=True)
 perm=torch.randperm(len(dataset))
 for j in range(5):
-  draw_graph(dataset[perm[j]])
-
-num_train=int(0.8*len(dataset))
-train_loader=DataLoader(dataset[:num_train], batch_size=32, shuffle=True)
-test_loader=DataLoader(dataset[num_train:], batch_size=32, shuffle=True)
+#  draw_graph(dataset[perm[j]])
+  print(dataset[perm[j]])
+quit()
+#num_train=int(0.8*len(dataset))
+#train_loader=DataLoader(dataset[:num_train], batch_size=32, shuffle=True)
+#test_loader=DataLoader(dataset[num_train:], batch_size=32, shuffle=True)
 
 #print(dataset.num_nodes)
 #print(dataset.num_features)
@@ -59,14 +60,13 @@ class GCN(torch.nn.Module):
         return F.log_softmax(x, dim=1)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = GCN().to(device)
+#model = GCN().to(device)
 
-print(dataset[0])
+#print(dataset[0])
 #print(dataset[0].shape)
-print(model(dataset[0]).shape)
-quit()
-
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+#for j in range(10):
+#  print(model(dataset[0])[j,:].tolist())
+#quit()
 
 def train_loop (dataloader, model, optimizer): 
     size=len(dataloader.dataset)
@@ -85,7 +85,16 @@ def train_loop (dataloader, model, optimizer):
 
 
 dataset = Planetoid(root='/tmp/Cora', name='Cora')
-print(dataset[0].train_mask)
+data = dataset[0].to(device)
+model = GCN().to(device)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+
+#print(dataset[0].train_mask)
+#len(dataset)
+for data in dataset : 
+  print(data)
+#data=next(iter(dataset))
+#print(data)
 quit()
 
 model.train()
@@ -102,4 +111,30 @@ correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
 acc = int(correct) / int(data.test_mask.sum())
 print(f'Accuracy: {acc:.4f}')
 #>>> Accuracy: 0.8150
+model.train()
+for epoch in range(200):
+    optimizer.zero_grad()
+    out = model(data)
+    loss = F.nll_loss(out[data.train_mask], data.y[data.train_mask])
+    loss.backward()
+    optimizer.step()
 
+model.eval()
+pred = model(data).argmax(dim=1)
+correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
+acc = int(correct) / int(data.test_mask.sum())
+print(f'Accuracy: {acc:.4f}')
+model.train()
+for epoch in range(20):
+    optimizer.zero_grad()
+    out = model(data)
+    loss = F.nll_loss(out[data.train_mask], data.y[data.train_mask])
+    loss.backward()
+    optimizer.step()
+
+model.eval()
+pred = model(data).argmax(dim=1)
+correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
+acc = int(correct) / int(data.test_mask.sum())
+print(f'Accuracy: {acc:.4f}')
+#
