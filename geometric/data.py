@@ -1,5 +1,6 @@
 import torch
 from torch_geometric.data import Data
+from torch_geometric.loader import DataLoader
 from torch_geometric.utils import to_networkx
 import networkx as nx
 import matplotlib.pyplot as plt
