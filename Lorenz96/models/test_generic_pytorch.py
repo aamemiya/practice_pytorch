@@ -136,7 +136,7 @@ if ckpt_list:
     start_epoch=ckpt['epoch']+1
     print("Load from latest checkpoint file:" +ckpt_list[-1])
 
-total_epoch=500
+total_epoch=100
 log_intv=20
 logs=[]
 for epoch in range(start_epoch,total_epoch+start_epoch):

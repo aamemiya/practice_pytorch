@@ -18,6 +18,6 @@ class nnmodel(nn.Module):
 
 model=nnmodel()
 loss=nn.MSELoss()
-optimizer= torch.optim.SGD(model.parameters(),lr=1.0e-2)
+optimizer= torch.optim.SGD(model.parameters(),lr=1.0e-3)
 model_name="nn"
 
