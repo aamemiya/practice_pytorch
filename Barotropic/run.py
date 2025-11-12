@@ -5,11 +5,9 @@ from netCDF4 import Dataset
 params = Simul.create_default_params()
 params.oper.nx = params.oper.ny = 256
 params.oper.Lx = params.oper.Ly = 2.0 * 3.141592653589793
-params.time_stepping.t_end = 100.0
-print(params.time_stepping)
-quit()
-
-
+params.time_stepping.t_end = 10.0
+params.time_stepping.deltat0 = 0.002
+params.time_stepping.USE_CFL = False
 
 params.forcing.enable = True
 #params.forcing.type = "in_script"        # fixed pattern you supply
