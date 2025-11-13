@@ -3,7 +3,7 @@ import numpy as np, math
 from netCDF4 import Dataset
 
 params = Simul.create_default_params()
-params.oper.nx = params.oper.ny = 256
+params.oper.nx = params.oper.ny = 128
 params.oper.Lx = params.oper.Ly = 2.0 * 3.141592653589793
 params.time_stepping.t_end = 10.0
 params.time_stepping.deltat0 = 0.002
@@ -12,23 +12,20 @@ params.time_stepping.USE_CFL = False
 params.forcing.enable = True
 params.forcing.type = "in_script"        # fixed pattern you supply
 params.forcing.key_forced = "rot_fft"    # force vorticity (standard in ns2d)
-params.nu_4 = 1e-8                   # hyperviscosity (example)
+params.nu_4 = 1e-6                   # hyperviscosity (example)
 params.nu_m4 = 5e-2                   # hypoviscosity (example)
 
-params.output.sub_directory="/home/jwa-user/practice_pytorch/Barotropic/output"
+params.output.sub_directory="/home/jwa-user/practice_pytorch/Barotropic/output_low"
 params.output.periods_save.phys_fields = 2.0
 
-print(params.output)
-quit()
-
-params.init_fields.type="noise"
-params.init_fields.noise.length=0.0
+params.init_fields.type="from_file"
+params.init_fields.from_file.path="/home/jwa-user/practice_pytorch/Barotropic/dummy_low_init/state_phys_t0008.002.nc"
 
 sim = Simul(params)
 op = sim.oper
 
 # --- open a NetCDF file to load the forcing ---
-path_nc = "/home/jwa-user/practice_pytorch/Barotropic/forcing_test.nc"
+path_nc = "/home/jwa-user/practice_pytorch/Barotropic/forcing_test_low.nc"
 nc = Dataset(path_nc, "r")
 
 forcing_rot_r=nc["rot_fft_forcing_r"]

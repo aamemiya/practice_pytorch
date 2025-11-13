@@ -18,11 +18,8 @@ params.nu_m4 = 5e-2                   # hypoviscosity (example)
 params.output.sub_directory="/home/jwa-user/practice_pytorch/Barotropic/output"
 params.output.periods_save.phys_fields = 2.0
 
-print(params.output)
-quit()
-
-params.init_fields.type="noise"
-params.init_fields.noise.length=0.0
+params.init_fields.type="from_file"
+params.init_fields.from_file.path="/home/jwa-user/practice_pytorch/Barotropic/restart.nc"
 
 sim = Simul(params)
 op = sim.oper

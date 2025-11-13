@@ -43,12 +43,14 @@ for f in files :
 ### nature run
   nc = netCDF4.Dataset(f,'r')
 
-#print(nc)
-#print(nc.groups['state_phys'])
+#  print(nc)
+#  print(nc.groups['state_phys'])
 #for var in nc.variables[:]:
 #    print(var)
-#quit()
+#  quit()
   vor = np.array(nc.groups['state_phys'].variables['rot'][:])
+  nx = np.array(nc.groups['state_phys'].dimensions['x'].size)
+  ny = np.array(nc.groups['state_phys'].dimensions['y'].size)
   nc.close
 
 #vor=np.random.rand(256,256)
@@ -59,8 +61,8 @@ for f in files :
 
 #plt.contourf()
 
-  x1=np.linspace(1,256,num=256)
-  y1=np.linspace(1,256,num=256)
+  x1=np.linspace(1,nx,num=ny)
+  y1=np.linspace(1,ny,num=ny)
   x,y=np.meshgrid(x1,y1)
 
   cs=plt.pcolormesh(x,y,vor, norm=vor_norm,cmap=vor_colormap)
