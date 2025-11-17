@@ -19,7 +19,6 @@ from torch.utils.data import DataLoader
 #import encoder_decoder as custom
 #import transconv as custom
 import gcn as custom
-#import gcn_test as custom
 #import gcn_light as custom
 #import convlstm as custom
 
@@ -34,8 +33,8 @@ time = np.array(nc.variables['t'][:], dtype=type(np.float64)).astype(np.float32)
 nc.close 
 
 #nsmp=data_input.shape[0]
-nsmp=3001
-nval=1001
+nsmp=4
+nval=2
 
 data_input=v[:nsmp-1,:]
 data_output=v[1:nsmp,:]-v[:nsmp-1,:]
@@ -137,7 +136,7 @@ torch_data_val_input=torch.from_numpy(data_input_val.astype(np.float32))
 torch_data_val_output=torch.from_numpy(data_output_val.astype(np.float32))
 
 torch_dataset_val=MyDataset(torch_data_val_input,torch_data_val_output,do_transform_y=False)
-torch_dataloader_val=DataLoader(torch_dataset_val,batch_size=32,shuffle=True)
+torch_dataloader_val=DataLoader(torch_dataset_val,batch_size=2,shuffle=True)
 
 start_epoch=1
 

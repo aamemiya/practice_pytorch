@@ -3,53 +3,70 @@ import numpy as np
 
 import torch
 from torch import nn
-from torch_geometric.nn import GCNConv, GraphConv
+from torch_geometric.nn import GCNConv, GraphConv, GENConv
 from torch_geometric.data import Data, Batch
-from torch.nn.functional import relu
+from torch.nn.functional import relu, tanh
 
 class nnmodel(nn.Module):
   def __init__(self, ndim):
     super().__init__()
     self.ndim=ndim
-    self.hidden_node=10
-    self.hidden_feature=8
+    self.hidden_node=40
+    self.hidden_feature=10
     self.hidden_dim=self.hidden_node*self.hidden_feature
 
-    stride=3
+    stride=5
     edges=[]
     edge_weights=[]
+    edge_dist=[]
     for j in range(self.hidden_node):
       edges.append([j,j])
-      edge_weights.append(1)
+      edge_weights.append(1.0)
+      edge_dist.append(0)
       for dj in range(1,stride-1):
         edges.append([j,np.mod(j-dj,self.hidden_node)])
         edge_weights.append(np.exp( -(dj/stride)**2 ).astype(np.float32))
+        edge_dist.append(float(-dj))
         edges.append([j,np.mod(j+dj,self.hidden_node)])
         edge_weights.append(np.exp( -(dj/stride)**2 ).astype(np.float32))
-    encode_stride=3
+        edge_dist.append(float(dj))
+    encode_stride=5
     encoder_edges=[]
     decoder_edges=[]
+    encoder_edge_dist=[]
+    decoder_edge_dist=[]
     for j in range(self.hidden_node):
         center_grid = np.mod(int(j*self.ndim/self.hidden_node),self.ndim)
         for i in range(center_grid-encode_stride,center_grid+encode_stride):
             encoder_edges.append([np.mod(i,self.ndim),j])
             decoder_edges.append([j,np.mod(i,self.ndim)])
+            decoder_edge_dist.append(float(i-center_grid))
+            encoder_edge_dist.append(float(center_grid-i))
 
     self.edge_index=torch.tensor(edges).transpose(1,0)
     self.edge_weight=torch.tensor(edge_weights)
+    self.edge_dist=torch.tensor(edge_dist)
     self.encoder_edge_index=torch.tensor(encoder_edges).transpose(1,0)
     self.decoder_edge_index=torch.tensor(decoder_edges).transpose(1,0)
+    self.encoder_edge_dist=torch.tensor(encoder_edge_dist)
+    self.decoder_edge_dist=torch.tensor(decoder_edge_dist)
 
-    self.encoder = GraphConv( (1,self.hidden_feature) , self.hidden_feature)
+    #self.encoder = GraphConv( (1,self.hidden_feature) , self.hidden_feature)
+    self.encoder = GENConv( (1,self.hidden_feature) , self.hidden_feature, edge_dim=1)
     self.acti    = relu
-    self.predictor = GraphConv(self.hidden_feature, self.hidden_feature) ### PREDICTOR
+    #self.acti    = tanh
+    #self.predictor = GraphConv(self.hidden_feature, self.hidden_feature) ### PREDICTOR
+    self.predictor = GENConv(self.hidden_feature, self.hidden_feature, edge_dim=1) ### PREDICTOR
 
-    self.decoder = GraphConv( (self.hidden_feature,1) , 1)
+    #self.decoder = GraphConv( (self.hidden_feature,1) , 1)
+    self.decoder = GENConv( (self.hidden_feature,1) , 1, edge_dim=1)
+  
+    self.final = nn.Linear(self.ndim,self.ndim, bias=False)
 
   def forward(self, x):
     x=x.unsqueeze(-1)
     nbatch=x.shape[0]
-    z=torch.rand(nbatch,self.hidden_node,self.hidden_feature)
+    z=torch.zeros(nbatch,self.hidden_node,self.hidden_feature)
 
     def batch_index(index_orig,nbatch,node_in,node_out):
         E = index_orig
@@ -69,28 +86,55 @@ class nnmodel(nn.Module):
     decoder_edge_index_b=batch_index(self.decoder_edge_index,nbatch,self.hidden_node,self.ndim)
     edge_index_b=batch_index(self.edge_index,nbatch,self.hidden_node,self.hidden_node)
     edge_weight_b=torch.cat([self.edge_weight for i in range(nbatch)], dim=0)
+    edge_dist_b=torch.cat([self.edge_dist for i in range(nbatch)], dim=0).unsqueeze(-1)
+    encoder_edge_dist_b=torch.cat([self.encoder_edge_dist for i in range(nbatch)], dim=0).unsqueeze(-1)
+    decoder_edge_dist_b=torch.cat([self.decoder_edge_dist for i in range(nbatch)], dim=0).unsqueeze(-1)
 
     x_b=torch.cat([x[i] for i in range(nbatch)], dim=0)
     z_b=torch.cat([z[i] for i in range(nbatch)], dim=0)
-    z_b = self.acti(self.encoder((x_b,z_b),encoder_edge_index_b))
 
-    z_b = self.acti(self.predictor(z_b,edge_index_b,edge_weight_b))
-    y = torch.rand((nbatch,40,1))
+   # print(x_b.shape)
+   # print(encoder_edge_index_b.shape)
+   # print(encoder_edge_dist_b.shape)
+  #  quit()
+
+    z_b = self.encoder((x_b,z_b),encoder_edge_index_b,edge_attr=encoder_edge_dist_b)
+
+    #z_b = self.acti(self.encoder((x_b,z_b),encoder_edge_index_b))
+    #z_b = self.acti(self.encoder((x_b,z_b),encoder_edge_index_b,edge_attr=encoder_edge_dist_b))
+    #z_b = self.encoder((x_b,z_b),encoder_edge_index_b)
+
+   # z_b = self.acti(self.predictor(z_b,edge_index_b,edge_weight_b))
+    #z_b = self.predictor(z_b,edge_index_b,edge_weight_b)
+    #z_b = self.predictor(z_b,edge_index_b)
+    z_b = self.predictor(z_b,edge_index_b,edge_attr=edge_dist_b)
+    y = torch.zeros((nbatch,40,1))
 
     y_b=torch.cat([y[i] for i in range(nbatch)], dim=0)
-    y = self.decoder((z_b,y_b),decoder_edge_index_b).view(nbatch,40)
+    #y = self.final(self.decoder((z_b,y_b),decoder_edge_index_b).view(nbatch,40))
+    y = self.final(self.decoder((z_b,y_b),decoder_edge_index_b,edge_attr=decoder_edge_dist_b).view(nbatch,40))
 
     return y
 
 model=nnmodel(40)
 loss=nn.MSELoss()
-optimizer= torch.optim.SGD(model.parameters(),lr=1.0e-3)
+optimizer= torch.optim.Adam(model.parameters(),lr=1.0e-3)
 
 model_name="gcn"
 
 x_smp=torch.rand((10,40))
 print(x_smp.shape)
 print(model(x_smp).shape)
+#quit()
+
+# Total parameters
+total_params = sum(p.numel() for p in model.parameters())
+print(f"Total Parameters: {total_params}")
+
+# Trainable parameters
+trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+print(f"Trainable Parameters: {trainable_params}")
+
 
 
 
