@@ -6,8 +6,9 @@ import netCDF4
 import matplotlib
 import matplotlib.pyplot as plt
 
-figname="low_forcing"
-ncname="forcing_test_low.nc"
+figname="forcing"
+#ncname="forcings/forcing.nc"
+ncname="output/NS2D_256x256_S2pix2pi_2025-11-19_17-24-39/forcing_additonal.nc"
 
 vor_colors = [
     "#000066", 
@@ -48,7 +49,9 @@ params.oper.Lx = params.oper.Ly = 2.0 * 3.141592653589793
 sim = Simul(params)
 
 
-for it in range(0,4000,200):
+#for it in range(0,4000,200):
+#for it in range(1100,1200):
+for it in range(700,800):
    forcing_fft_rot = forcing_rot_r[it] + 1j * forcing_rot_i[it]
    forcing_rot = sim.oper.ifft(forcing_fft_rot)
 #   print(it,np.max(forcing_rot))

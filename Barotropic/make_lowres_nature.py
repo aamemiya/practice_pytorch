@@ -5,8 +5,8 @@ import numpy as np
 import netCDF4
 
 
-dir_high = "output/NS2D_256x256_S2pix2pi_2025-11-12_15-11-20"
-dir_low ="dummy_low_init"
+dir_high = "nature"
+dir_low ="nature_low"
  
 paths=glob.glob(dir_high + "/state_phys_*.nc")
 

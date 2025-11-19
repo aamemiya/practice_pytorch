@@ -35,10 +35,9 @@ vor_levels = np.arange(-12,14,2)
 vor_norm=matplotlib.colors.BoundaryNorm(vor_levels, len(vor_levels))
 
 
-
-
 it=0
-for f in files :
+for f in files[it:] :
+#for f in files[:100] :
 
 ### nature run
   nc = netCDF4.Dataset(f,'r')
@@ -69,7 +68,7 @@ for f in files :
 #  cs=plt.contourf(x,y,vor,levels=vor_levels,norm=vor_norm, cmap=vor_colormap,extend="both")
   cbar = plt.colorbar(cs,location='right')
   #cbar.set_label('m/s')
-  fname="test_"+str(it).zfill(3)+".png"
+  fname="test_"+str(it).zfill(4)+".png"
   print(fname)
   plt.savefig(fname)
   plt.clf()

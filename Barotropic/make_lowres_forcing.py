@@ -3,7 +3,7 @@ import numpy as np, math
 from netCDF4 import Dataset
 
 # --- open a NetCDF file to load the forcing ---
-path_nc_in = "/home/jwa-user/practice_pytorch/Barotropic/forcing_test.nc"
+path_nc_in = "/home/jwa-user/practice_pytorch/Barotropic/forcings_new/forcing.nc"
 nc = Dataset(path_nc_in, "r")
 
 vrot_in=nc["rot_forcing"]
@@ -16,7 +16,7 @@ nt=nc.dimensions['time'].size
 #print(nt)
 #quit()
 # --- open a NetCDF file to log the forcing ---
-path_nc_out = "/home/jwa-user/practice_pytorch/Barotropic/forcing_test_low.nc"
+path_nc_out = "/home/jwa-user/practice_pytorch/Barotropic/forcings_new/forcing_x2.nc"
 nc = Dataset(path_nc_out, "w")
 nc.createDimension("time", None)
 nc.createDimension("y", ny//2)
