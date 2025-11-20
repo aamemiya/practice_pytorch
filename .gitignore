@@ -1,6 +1,7 @@
 *.png
 *.pth
 Barotropic/*.nc
+Barotropic_low/*.nc
 Lorenz96/DATA
 MLBiasCorrection/reg/TEST_out
 *__pycache__
