@@ -6,7 +6,7 @@ import netCDF4
 
 
 dir_high = "nature/control"
-dir_low ="nature/x2"
+dir_low ="nature/x4"
  
 paths=glob.glob(dir_high + "/state_phys_*.nc")
 

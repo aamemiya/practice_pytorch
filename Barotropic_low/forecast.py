@@ -10,7 +10,7 @@ nx=128
 dt0=0.004
 dt_out=0.4
 intv_out=int(round(dt_out/dt0))
-length=2.0
+lead_time=10
 
 # Keep a reference to the original method
 _orig_has_to_online_save = SpecificOutput._has_to_online_save
@@ -34,8 +34,8 @@ params.forcing.key_forced = "rot_fft"    # force vorticity (standard in ns2d)
 params.nu_4 = 4e-6                  # hyperviscosity (example)
 params.nu_m4 = 5e-2                   # hypoviscosity (example)
 
-params.output.sub_directory=os.path.join(os.getcwd(),"output")
-#params.output.sub_directory="/mnt/work/jbm/amemiya/Barotropic/output"
+#params.output.sub_directory=os.path.join(os.getcwd(),"output")
+params.output.sub_directory="/data/Barotropic/output"
 params.output.periods_save.phys_fields = dt_out
 params.output.periods_print["print_stdout"]=10*dt_out
 
@@ -46,10 +46,7 @@ params.init_fields.from_file.path=init_nc
 nc=Dataset(init_nc,"r")
 init_time = nc["state_phys"].time
 
-lead_time=10
-
 params.time_stepping.t_end = init_time + lead_time
-
 
 sim = Simul(params)
 op = sim.oper

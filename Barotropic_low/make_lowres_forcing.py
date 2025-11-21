@@ -4,7 +4,7 @@ from netCDF4 import Dataset
 from fluidsim.solvers.ns2d.solver import Simul
 
 # --- open a NetCDF file to load the forcing ---
-path_nc_in = os.path.join(os.getcwd(),"forcings","forcing.nc")
+path_nc_in = os.path.join(os.getcwd(),"forcings","forcing_x2.nc")
 nc = Dataset(path_nc_in, "r")
 
 vrot_in=nc["rot_forcing"]
@@ -17,7 +17,7 @@ nt=nc.dimensions['time'].size
 #print(nt)
 #quit()
 # --- open a NetCDF file to log the forcing ---
-path_nc_out = os.path.join(os.getcwd(),"forcings","forcing_x2.nc")
+path_nc_out = os.path.join(os.getcwd(),"forcings","forcing_x4.nc")
 nc = Dataset(path_nc_out, "w")
 nc.createDimension("time", None)
 nc.createDimension("y", ny//2)

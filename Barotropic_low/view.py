@@ -68,7 +68,7 @@ for f in files[ista:iend:intv] :
 
 #plt.contourf()
 
-  x1=np.linspace(1,nx,num=ny)
+  x1=np.linspace(1,nx,num=nx)
   y1=np.linspace(1,ny,num=ny)
   x,y=np.meshgrid(x1,y1)
 
