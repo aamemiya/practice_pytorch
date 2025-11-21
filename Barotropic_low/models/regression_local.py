@@ -44,7 +44,7 @@ vor_colormap.set_under(vor_colors[0])
 vor_levels = np.arange(-12,14,2)
 vor_norm=matplotlib.colors.BoundaryNorm(vor_levels, len(vor_levels))
 
-u_levels = np.arange(-12,14,1)*0.1
+u_levels = np.arange(-12,14,2)*0.5
 u_norm=matplotlib.colors.BoundaryNorm(u_levels, len(u_levels))
 
 
@@ -148,7 +148,7 @@ uvltest=np.stack((np.array(ultest),np.array(vltest)),axis=-3)
 uvlsmp_ds=make_ds(uvlsmp,scale)
 uvltest_ds=make_ds(uvltest,scale)
 
-nsmp,nt=tuple(uvsmp.shape[0:2])
+nt=uvsmp.shape[1]
 
 for it in [0, 2, 4, 6]: 
     smp_knl=[]
@@ -162,10 +162,10 @@ for it in [0, 2, 4, 6]:
             test_knl.append(  uvtest[:,it,:,scale*j:scale*(j+1),scale*i:scale*(i+1)] - uvltest_ds[:,it,:,scale*j:scale*(j+1),scale*i:scale*(i+1)]  ) 
             test_knl_predictor.append( slice_cyclic(uvltest[:,it,:,:,:],j-width+1,j+width,i-width+1,i+width) ) 
 
-    smp_knl=np.array(smp_knl).reshape(nx_low*nx_low*nsmp,2*scale*scale)
-    smp_knl_predictor=np.array(smp_knl_predictor).reshape(nx_low*nx_low*nsmp,2*(2*width-1)**2)
-    test_knl=np.array(test_knl).reshape(nx_low*nx_low*nsmp,2*scale*scale)
-    test_knl_predictor=np.array(test_knl_predictor).reshape(nx_low*nx_low*nsmp,2*(2*width-1)**2)
+    smp_knl=np.array(smp_knl).reshape(nx_low*nx_low*nsmp_train,2*scale*scale)
+    smp_knl_predictor=np.array(smp_knl_predictor).reshape(nx_low*nx_low*nsmp_train,2*(2*width-1)**2)
+    test_knl=np.array(test_knl).reshape(nx_low*nx_low*nsmp_test,2*scale*scale)
+    test_knl_predictor=np.array(test_knl_predictor).reshape(nx_low*nx_low*nsmp_test,2*(2*width-1)**2)
   
     data_input_ext=np.concatenate((smp_knl_predictor,np.ones((smp_knl_predictor.shape[0],1))),axis=1)
     bmatinv=LA.inv(data_input_ext.transpose() @ data_input_ext)
@@ -193,20 +193,13 @@ for it in [0, 2, 4, 6]:
     print("std test, residual",test_std,res_std)
     print("explained variance : ",var_ratio)
 
-
-
-###
-    data_predict=test_knl
-###
-
-
     ### sample output 
     utest_rep=np.zeros((nx,nx))
     vtest_rep=np.zeros((nx,nx))
     for j in range(nx_low): 
         for i in range(nx_low): 
-            utest_rep[scale*j:scale*(j+1),scale*i:scale*(i+1)]  =  uvltest_ds[0,it,0,scale*j:scale*(j+1),scale*i:scale*(i+1)]  + data_predict[nx_low*j+i+0,:scale*scale].reshape((scale,scale))
-            vtest_rep[scale*j:scale*(j+1),scale*i:scale*(i+1)]  =  uvltest_ds[0,it,1,scale*j:scale*(j+1),scale*i:scale*(i+1)]  + data_predict[nx_low*j+i+0,scale*scale:].reshape((scale,scale))
+            utest_rep[scale*j:scale*(j+1),scale*i:scale*(i+1)]  =  uvltest_ds[0,it,0,scale*j:scale*(j+1),scale*i:scale*(i+1)]  + data_predict[(nx_low*j+i)*nsmp_test+0,:scale*scale].reshape((scale,scale))
+            vtest_rep[scale*j:scale*(j+1),scale*i:scale*(i+1)]  =  uvltest_ds[0,it,1,scale*j:scale*(j+1),scale*i:scale*(i+1)]  + data_predict[(nx_low*j+i)*nsmp_test+0,scale*scale:].reshape((scale,scale))
 
 
     utest_high=uvtest[0,it,0,:,:]   
@@ -214,8 +207,8 @@ for it in [0, 2, 4, 6]:
     utest_low=uvltest[0,it,0,:,:]   
     vtest_low=uvltest[0,it,1,:,:]   
 
-    utest_high=uvtest[0,it,0,:,:] - uvltest_ds[0,it,0,:,:]  
-    utest_rep=utest_rep[:,:] - uvltest_ds[0,it,0,:,:]  
+#    utest_high=uvtest[0,it,0,:,:] - uvltest_ds[0,it,0,:,:]  
+#    utest_rep=utest_rep[:,:] - uvltest_ds[0,it,0,:,:]  
 
     dx=2.0*np.pi/nx
     vor_rep=vor2d(utest_rep,vtest_rep,dx,dx)
@@ -232,35 +225,29 @@ for it in [0, 2, 4, 6]:
     y1=np.linspace(1,nx,num=nx)
     x,y=np.meshgrid(x1,y1)
 
-#    cs=plt.pcolormesh(x,y,vor_rep, norm=vor_norm,cmap=vor_colormap)
-#    #cs=plt.contourf(x,y,vor,levels=vor_levels,norm=vor_norm, cmap=vor_colormap,extend="both")
-#    cbar = plt.colorbar(cs,location='right')
-#    #cbar.set_label('m/s')
-#    fname="vor_rep.png"
-#    print(fname)
-#    plt.savefig(fname)
-#    plt.clf()
-#    cs=plt.pcolormesh(x,y,vor_high, norm=vor_norm,cmap=vor_colormap)
-#    #cs=plt.contourf(x,y,vor,levels=vor_levels,norm=vor_norm, cmap=vor_colormap,extend="both")
-#    cbar = plt.colorbar(cs,location='right')
-#    #cbar.set_label('m/s')
-#    fname="vor_high.png"
-#    print(fname)
-#    plt.savefig(fname)
-#    plt.clf()
+    cs=plt.pcolormesh(x,y,vor_rep, norm=vor_norm,cmap=vor_colormap)
+    cbar = plt.colorbar(cs,location='right')
+    fname="vor_rep.png"
+    print(fname)
+    plt.savefig(fname)
+    plt.clf()
+    cs=plt.pcolormesh(x,y,vor_high, norm=vor_norm,cmap=vor_colormap)
+    cbar = plt.colorbar(cs,location='right')
+    fname="vor_high.png"
+    print(fname)
+    plt.savefig(fname)
+    plt.clf()
 
     x1=np.linspace(1,nx_low,num=nx_low)
     y1=np.linspace(1,nx_low,num=nx_low)
     xl,yl=np.meshgrid(x1,y1)
 
-#    cs=plt.pcolormesh(xl,yl,vor_low, norm=vor_norm,cmap=vor_colormap)
-#    #cs=plt.contourf(x,y,vor,levels=vor_levels,norm=vor_norm, cmap=vor_colormap,extend="both")
-#    cbar = plt.colorbar(cs,location='right')
-#    #cbar.set_label('m/s')
-#    fname="vor_low.png"
-#    print(fname)
-#    plt.savefig(fname)
-#    plt.clf()
+    cs=plt.pcolormesh(xl,yl,vor_low, norm=vor_norm,cmap=vor_colormap)
+    cbar = plt.colorbar(cs,location='right')
+    fname="vor_low.png"
+    print(fname)
+    plt.savefig(fname)
+    plt.clf()
 
     cs=plt.pcolormesh(x,y,utest_rep, norm=u_norm,cmap=vor_colormap)
     cbar = plt.colorbar(cs,location='right')
@@ -274,12 +261,12 @@ for it in [0, 2, 4, 6]:
     print(fname)
     plt.savefig(fname)
     plt.clf()
-#    cs=plt.pcolormesh(xl,yl,utest_low, norm=u_norm,cmap=vor_colormap)
-#    cbar = plt.colorbar(cs,location='right')
-#    fname="u_low.png"
-#    print(fname)
-#    plt.savefig(fname)
-#    plt.clf()
+    cs=plt.pcolormesh(xl,yl,utest_low, norm=u_norm,cmap=vor_colormap)
+    cbar = plt.colorbar(cs,location='right')
+    fname="u_low.png"
+    print(fname)
+    plt.savefig(fname)
+    plt.clf()
 
 
     quit()
